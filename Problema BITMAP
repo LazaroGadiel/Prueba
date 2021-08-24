@@ -1,0 +1,140 @@
+#include <stdio.h>
+#include <string.h>
+
+#include <string>
+#include <vector>
+#include <list>
+#include <map>
+#include <set>
+#include <queue>
+#include <deque>
+#include <stack>
+#include <bitset>
+#include <algorithm>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+#define ARRAY_SIZE(arr) sizeof(arr)/sizeof(arr[0])
+#define INT_MIN -2147483647
+#define INT_MAX 2147483647
+#define INF_LL 9223372036854775807LL
+#define PI acos(-1.0)
+#define llu long long unsigned
+#define ll long long int
+#define ld long int
+#define iter(i,a) for( typeof(a.begin()) i=a.begin();i!=a.end();i++)
+#define REP(p,a,b) for(int p=a;p<b;p++)
+#define REPR(p,a,b) for(int p=a;p>=b;p--)
+#define mod 1000000007
+#define getchar_unlocked getchar
+#define pb(f) push_back(f)
+#define pob(f) pop_back(f)
+#define pf(f) push_front(f)
+#define pof(f) pop_front(f)
+#define mkp(a,b) make_pair(a,b)
+#define fst first
+#define snd second
+#define pii pair<int,int>
+#define ins(a) insert(a)
+#define CLR(x) memset(x,0,sizeof(x))
+#define FAST_LOG2(x) (sizeof(unsigned long)*8 - 1 - __builtin_clzl((unsigned long)(x)))
+#define IOS ios_base::sync_with_stdio(false)
+#define citi cin.tie(NULL);
+#define FREI(var) freopen(var,"r",stdin)
+#define FREO(var) freopen(var,"w",stdout)
+#define endl "\n"
+
+
+
+string arr[182];
+int a[182][182];
+queue< pair<int,int> >q;
+
+bool isValid(int x,int y,int R,int C)
+{
+    return (x>=0&&y>=0&&x<R&&y<C);
+}
+
+void solve(int R,int C)
+{
+    memset(a,-1,sizeof a);
+    for(int i=0;i<R;i++)
+    {
+        for(int j=0;j<C;j++)
+        {
+            if(arr[i][j]=='1')
+            {
+                q.push(make_pair(i,j));
+                a[i][j]=0;
+            }
+        }
+    }
+
+    int time=1;
+
+    while(!q.empty())
+    {
+        int size=q.size();
+        while(size--)
+        {
+            pair<int,int> p=q.front();
+            q.pop();
+            if(isValid(p.first-1,p.second,R,C)&&a[p.first-1][p.second]==-1)
+            {
+                q.push(make_pair(p.first-1,p.second));
+                a[p.first-1][p.second]=time;
+            }
+            if(isValid(p.first+1,p.second,R,C)&&a[p.first+1][p.second]==-1)
+            {
+                q.push(make_pair(p.first+1,p.second));
+                a[p.first+1][p.second]=time;
+            }
+            if(isValid(p.first,p.second-1,R,C)&&a[p.first][p.second-1]==-1)
+            {
+                q.push(make_pair(p.first,p.second-1));
+                a[p.first][p.second-1]=time;
+            }
+            if(isValid(p.first,p.second+1,R,C)&&a[p.first][p.second+1]==-1)
+            {
+                q.push(make_pair(p.first,p.second+1));
+                a[p.first][p.second+1]=time;
+            }
+        }
+        time++;
+    }
+}
+
+int main()
+{
+    //FREI("input.txt");
+    //FREO("output.txt");
+    IOS;
+    citi;
+    int t,n,m;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n>>m;
+        REP(i,0,n)
+            cin>>arr[i];
+        solve(n,m);
+        REP(i,0,n)
+        {
+            REP(j,0,m)
+                cout<<a[i][j]<<" ";
+            cout<<endl;
+        }
+
+    }
+    return 0;
+}
